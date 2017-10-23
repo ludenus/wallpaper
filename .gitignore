@@ -1,0 +1,7 @@
+/.idea/
+*.iml
+bindata*
+go-bindata*
+wallpaper
+version.json
+config.json
