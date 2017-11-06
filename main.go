@@ -226,5 +226,5 @@ func set_wallpaper(filename string) {
 
 func set_author_info(image *unsplash.Image) {
 	mUnsplash.SetTitle(image.User.Name + " / Unsplash ")
-	unsplashUrl = image.Links.HTML
+	unsplashUrl = image.Links.HTML+"?utm_source=ludenus&utm_medium=referral&utm_campaign=api-credit"
 }
