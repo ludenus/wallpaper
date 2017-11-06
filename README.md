@@ -6,7 +6,9 @@ Key differences from the [official unsplash app](https://itunes.apple.com/us/app
 
 ## How to build
 ### Prerequisites
-Go is installed and the following env vars are set
+
+* You have your own [Uunsplash_Application_ID](https://unsplash.com/documentation#creating-a-developer-account)
+* Go is installed and the following env vars are set
 ```
    GOROOT=/usr/local/go # may be different, depends on OS
    GOPATH=$HOME/go
@@ -15,18 +17,19 @@ Go is installed and the following env vars are set
 ### Linux
 build script asks for sudo password to install dependencies
 ```
-$ ./build_lin.sh
+$ UNSPLASH_APPLICATION_ID=<Your Unsplash Application ID> ./build_lin.sh
 ```
 
 ### MacOsX
 build script asks for sudo password to install dependencies
 ``` 
-$ ./build_mac.sh
+$ UNSPLASH_APPLICATION_ID=<Your Unsplash Application ID> ./build_mac.sh
 ```
 
 ### Windows
+using git bash shell
 ```
-build_win.sh
+$ UNSPLASH_APPLICATION_ID=<Your Unsplash Application ID> build_win.sh
 ```
 ## How to run
 ```

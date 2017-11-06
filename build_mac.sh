@@ -13,7 +13,7 @@ echo "\"collection\":\"wallpaper\"," >> appdir/config.json
 echo "\"switch_wallpaper_interval_seconds\":300," >> appdir/config.json
 echo "\"refresh_collection_interval_seconds\":3600," >> appdir/config.json
 echo "\"history_limit\":100," >> appdir/config.json
-echo "\"unsplash_api_key\":\"${UNSPLASH_API_KEY}\"" >> appdir/config.json
+echo "\"unsplash_api_key\":\"${UNSPLASH_APPLICATION_ID}\"" >> appdir/config.json
 echo "}" >> appdir/config.json
 
 echo "report version..."
