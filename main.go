@@ -24,12 +24,14 @@ import (
 
 var (
 
-	unsplashUrl = "https://unsplash.com"
+	unsplashPhotoUrl = "https://unsplash.com"
+	unsplashAuthorUrl = "https://unsplash.com"
 
 	current_wallpaper *unsplash.Image
 
 	mBack        *systray.MenuItem
-	mUnsplash    *systray.MenuItem
+	mPhoto       *systray.MenuItem
+	mAuthor      *systray.MenuItem
 	mRandomImage *systray.MenuItem
 	mAbout       *systray.MenuItem
 	mQuit        *systray.MenuItem
@@ -53,7 +55,8 @@ func version_string() string {
 }
 
 func init_menu() {
-	mUnsplash = systray.AddMenuItem("Unsplash", "Open photo on Unsplash")
+	mPhoto = systray.AddMenuItem("Photo/Unsplash", "Open photo on Unsplash")
+	mAuthor = systray.AddMenuItem("Author/Unsplash", "Author profile on Unsplash")
 	mRandomImage = systray.AddMenuItem("Random Wallpaper", "Set random wallpaper")
 	mBack = systray.AddMenuItem("Previous Wallpaper", "Previous image")
 	mAbout = systray.AddMenuItem("About "+version_string(), "Github Link")
@@ -95,8 +98,10 @@ func loop_menu() {
 			switch_wallpaper()
 		case <-collection_tick:
 			go refresh_collection()
-		case <-mUnsplash.ClickedCh:
-			open.Run(unsplashUrl)
+		case <-mAuthor.ClickedCh:
+			open.Run(unsplashAuthorUrl)
+		case <-mPhoto.ClickedCh:
+			open.Run(unsplashPhotoUrl)
 		case <-mRandomImage.ClickedCh:
 			switch_wallpaper()
 		case <-mBack.ClickedCh:
@@ -225,6 +230,8 @@ func set_wallpaper(filename string) {
 }
 
 func set_author_info(image *unsplash.Image) {
-	mUnsplash.SetTitle(image.User.Name + " / Unsplash ")
-	unsplashUrl = image.Links.HTML+"?utm_source=ludenus&utm_medium=referral&utm_campaign=api-credit"
+	mPhoto.SetTitle("Photo / Unsplash")
+	mAuthor.SetTitle(image.User.Name+ " / Unsplash")
+	unsplashPhotoUrl = image.Links.HTML+"?utm_source=ludenus&utm_medium=referral&utm_campaign=api-credit"
+	unsplashAuthorUrl = image.User.Links.HTML+"?utm_source=ludenus&utm_medium=referral&utm_campaign=api-credit"
 }
