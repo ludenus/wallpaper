@@ -36,9 +36,7 @@ func save_resources() {
 	images_dir()
 	unsplash_dir()
 
-	if !util.File_exists(app_dir()+"/config.json"){
-		save_asset_to_app_dir("appdir/config.json")
-	}
+	save_asset_to_app_dir("appdir/config_default.json")
 
 	save_asset_to_app_dir("appdir/version.json")
 

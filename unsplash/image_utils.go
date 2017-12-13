@@ -8,18 +8,20 @@ import (
 	"fmt"
 )
 
-func Persist_images(images []Image, dir string) {
+func Persist_images(images []Image, dir string, client *UClient) {
 	for _, image := range images {
-		Persist_image(&image, dir)
+		Persist_image(&image, dir, client)
 	}
 }
 
-func Persist_image(image *Image, dir string) (error) {
-	err := Persist_image_jpg(image, dir)
+func Persist_image(image *Image, dir string, client *UClient) (error) {
+
+	err:= Persist_image_jpg(image,dir,client)
 	if err != nil {
 		log.Println(fmt.Sprintf("Persist_image_jpg failed %s", err))
 		return err
 	}
+
 	err = Persist_image_json(image, dir)
 	if err != nil {
 		log.Println(fmt.Sprintf("Persist_image_json failed %s", err))
@@ -28,12 +30,21 @@ func Persist_image(image *Image, dir string) (error) {
 	return nil
 }
 
-func Persist_image_jpg(image *Image, dir string) (error) {
+func Persist_image_jpg(image *Image, dir string, client *UClient) (error) {
 	jpg_file := dir + "/" + image.ID + ".jpg"
-	err := Save_image_bytes_as(image, jpg_file)
-	if err != nil {
-		log.Println(fmt.Sprintf("Save_image_bytes_as failed %s", err))
-		return err
+	if util.File_exists(jpg_file) {
+		//log.Println("jpeg exists: " + jpg_filename)
+	} else {
+		if nil == image.Bytes {
+			// according to https://medium.com/unsplash/unsplash-api-guidelines-triggering-a-download-c39b24e99e02
+			bytes, err := client.DownloadImage(image)
+			if err != nil {
+				log.Println(fmt.Sprintf("DownloadImage failed %s", err))
+				return err
+			}
+			image.Bytes = bytes
+		}
+		util.Save_bytes_as(image.Bytes, jpg_file)
 	}
 	return nil
 }
@@ -48,22 +59,6 @@ func Persist_image_json(image *Image, dir string) (error) {
 	return nil
 }
 
-func Save_image_bytes_as(image *Image, jpg_filename string) (error) {
-	if util.File_exists(jpg_filename) {
-		//log.Println("jpeg exists: " + jpg_filename)
-	} else {
-		if nil == image.Bytes {
-			bytes, err := Get(image.Urls.Raw)
-			if err != nil {
-				log.Println(fmt.Sprintf("Get failed %s", err))
-				return err
-			}
-			image.Bytes = bytes
-		}
-		util.Save_bytes_as(image.Bytes, jpg_filename)
-	}
-	return nil
-}
 
 func Save_image_json_as(image *Image, json_filename string) (error) {
 	if nil == image.Json {

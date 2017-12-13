@@ -6,15 +6,16 @@ echo "refresh go-bindata dependencies..."
 go get -u github.com/jteeuwen/go-bindata/...
 go build -o go-bindata github.com/jteeuwen/go-bindata/go-bindata
 
-echo "prepare config ..."
-echo "{" > appdir/config.json
-echo "\"user\":\"ludenus\"," >> appdir/config.json
-echo "\"collection\":\"wallpaper\"," >> appdir/config.json
-echo "\"switch_wallpaper_interval_seconds\":300," >> appdir/config.json
-echo "\"refresh_collection_interval_seconds\":3600," >> appdir/config.json
-echo "\"history_limit\":100," >> appdir/config.json
-echo "\"unsplash_api_key\":\"${UNSPLASH_APPLICATION_ID}\"" >> appdir/config.json
-echo "}" >> appdir/config.json
+echo "prepare default config ..."
+echo "{" > appdir/config_default.json
+echo "\"user\":\"ludenus\"," >> appdir/config_default.json
+echo "\"collection\":\"wallpaper\"," >> appdir/config_default.json
+echo "\"switch_wallpaper_interval_seconds\":300," >> appdir/config_default.json
+echo "\"refresh_collection_interval_seconds\":3600," >> appdir/config_default.json
+echo "\"history_limit\":100," >> appdir/config_default.json
+echo "\"http_timeout_seconds\":11," >> appdir/config_default.json
+echo "\"unsplash_api_key\":\"${UNSPLASH_APPLICATION_ID}\"" >> appdir/config_default.json
+echo "}" >> appdir/config_default.json
 
 echo "report version..."
 
@@ -26,8 +27,8 @@ echo "}" >> appdir/version.json
 echo "rebuild resources..."
 ./go-bindata appdir/**
 
-echo "go get dependencies..."
-sudo go get all
+#echo "go get dependencies..."
+#sudo go get all
 
 echo "build..."
 go build -v github.com/ludenus/wallpaper

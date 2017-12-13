@@ -14,15 +14,17 @@ type Config struct {
 	RefreshCollectionIntervalSeconds int    `json:"refresh_collection_interval_seconds"`
 	HistoryLimit int    `json:"history_limit"`
 	UnsplashApiKey string    `json:"unsplash_api_key"`
+	HttpTimeoutSeconds int `json:"http_timeout_seconds"`
 }
 
 
-func Load(filename string) *Config{
+func Load(filename string, into *Config) *Config{
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
-	cfg := &Config{}
+	log.Println(into)
+	cfg := into
 	bytes, err := ioutil.ReadFile(filename)
 	if err != nil {
-		log.Println("cannot read config file")
+		log.Println("cannot read config file: " + filename)
 	}else{
 		err = json.Unmarshal(bytes, cfg)
 		if err != nil {

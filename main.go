@@ -75,8 +75,9 @@ func onReady() {
 
 	log.Println("github_url():" + github_url())
 	save_resources()
-	conf = config.Load(app_dir() + "/config.json")
-	unsplashClient = unsplash.NewClient(conf.UnsplashApiKey)
+	conf_default := config.Load(app_dir() + "/config_default.json", &config.Config{})
+	conf = config.Load(app_dir() + "/config.json", conf_default)
+	unsplashClient = unsplash.NewClient(conf.UnsplashApiKey, conf.HttpTimeoutSeconds)
 
 	init_menu()
 	switch_wallpaper()
@@ -167,12 +168,12 @@ func fetch_unsplash_data_from_collection() {
 		log.Println(fmt.Sprintf("GetPhotosByUserCollection failed %s", err))
 		return
 	}
-	unsplash.Persist_images(images, images_dir())
+	unsplash.Persist_images(images, images_dir(), unsplashClient)
 }
 
 func process_fetched_unsplash_data() {
 	images := unsplash.Parse_images_from_dir(unsplash_dir())
-	unsplash.Persist_images(images, images_dir())
+	unsplash.Persist_images(images, images_dir(), unsplashClient)
 }
 
 func set_random_switch_wallpaper() *unsplash.Image {
@@ -232,6 +233,7 @@ func set_wallpaper(filename string) {
 func set_author_info(image *unsplash.Image) {
 	mPhoto.SetTitle("Photo / Unsplash")
 	mAuthor.SetTitle(image.User.Name+ " / Unsplash")
-	unsplashPhotoUrl = image.Links.HTML+"?utm_source=ludenus&utm_medium=referral&utm_campaign=api-credit"
-	unsplashAuthorUrl = image.User.Links.HTML+"?utm_source=ludenus&utm_medium=referral&utm_campaign=api-credit"
+	// according to https://medium.com/unsplash/unsplash-api-guidelines-attribution-4d433941d777
+	unsplashPhotoUrl = image.Links.HTML+"?utm_source=desktop_slideshow&utm_medium=referral"
+	unsplashAuthorUrl = image.User.Links.HTML+"?utm_source=desktop_slideshow&utm_medium=referral"
 }
