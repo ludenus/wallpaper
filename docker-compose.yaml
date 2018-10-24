@@ -1,0 +1,14 @@
+---
+version: "2"
+services:
+
+  go-builder:
+    build: .
+    image: go-builder
+    working_dir: /go/src/github.com/ludenus/wallpaper
+    volumes:
+      - ./:/go/src/github.com/ludenus/wallpaper
+      # - ./bin:/go/bin
+    environment:
+      UNSPLASH_APPLICATION_ID: "${UNSPLASH_APPLICATION_ID}"
+      
