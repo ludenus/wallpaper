@@ -1,36 +1,39 @@
 package unsplash
 
 import (
-	"fmt"
-	"net/http"
-	"io/ioutil"
-	"crypto/tls"
-	"errors"
-	"log"
 	"encoding/json"
+	"errors"
+	"fmt"
+	"io/ioutil"
+	"log"
+	"net/http"
 	"time"
 )
 
 type UClient struct {
-	unsaplshApiKey string
+	unsplashApiKey string
 	timeoutSeconds int
+	httpClient     http.Client
 }
 
 func NewClient(apiKey string, timeoutSeconds int) *UClient {
-	return &UClient{
-		unsaplshApiKey: apiKey,
+
+	// tr := &http.Transport{
+	// 	TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	// }
+
+	uClient := UClient{
+		unsplashApiKey: apiKey,
 		timeoutSeconds: timeoutSeconds,
+		httpClient:     http.Client{}, //{Transport: tr},
 	}
+
+	uClient.httpClient.Timeout = time.Duration(uClient.timeoutSeconds) * time.Second
+
+	return &uClient
 }
 
 func (uClient *UClient) get(url string, adjust func(*http.Request) *http.Request) ([]byte, error) {
-	// setup httpClient
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-
-	httpClient := &http.Client{Transport: tr}
-	httpClient.Timeout = time.Duration(uClient.timeoutSeconds) * time.Second
 
 	// create request
 	request, err := http.NewRequest("GET", url, nil)
@@ -42,7 +45,7 @@ func (uClient *UClient) get(url string, adjust func(*http.Request) *http.Request
 	request = adjust(request)
 
 	// send request
-	response, err := httpClient.Do(request)
+	response, err := uClient.httpClient.Do(request)
 	if err != nil {
 		log.Println(fmt.Sprintf("failed to send request: %s", err))
 		return nil, err
@@ -53,9 +56,9 @@ func (uClient *UClient) get(url string, adjust func(*http.Request) *http.Request
 
 	contents, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		if err.Error()=="net/http: request canceled (Client.Timeout exceeded while reading body)"{
-			return nil,err
-		} else{
+		if err.Error() == "net/http: request canceled (Client.Timeout exceeded while reading body)" {
+			return nil, err
+		} else {
 			panic(err)
 		}
 	}
@@ -74,7 +77,7 @@ func (uClient *UClient) Get(url string) ([]byte, error) {
 
 	var adjust = func(request *http.Request) *http.Request {
 		request.Header.Set("Accept-Version", "v1")
-		request.Header.Set("Authorization", "uClient-ID "+uClient.unsaplshApiKey)
+		request.Header.Set("Authorization", "uClient-ID "+uClient.unsplashApiKey)
 		return request
 	}
 	contents, nil := uClient.get(url, adjust)

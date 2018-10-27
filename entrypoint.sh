@@ -42,3 +42,6 @@ go build -v github.com/ludenus/wallpaper
 # go install github.com/ludenus/wallpaper
 
 # echo "should now be able to run $GOPATH/bin/wallpaper"
+chmod 766 bindata.go
+chmod 777 go-bindata
+chmod 777 wallpaper

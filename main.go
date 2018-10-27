@@ -1,30 +1,25 @@
 package main
 
 import (
-	"github.com/getlantern/systray"
-	"github.com/skratchdot/open-golang/open"
-	"os"
-	//"github.com/jteeuwen/go-bindata"
-	"time"
 	"fmt"
-	"math/rand"
-	"strings"
-	"runtime"
 	"log"
+	"math/rand"
+	"os" //"github.com/jteeuwen/go-bindata"
+	"runtime"
+	"strings"
+	"time"
+
+	"github.com/getlantern/systray"
+	"github.com/ludenus/wallpaper/config"
 	"github.com/ludenus/wallpaper/unsplash"
 	"github.com/ludenus/wallpaper/util"
-	"github.com/ludenus/wallpaper/config"
 	"github.com/ludenus/wallpaper/version"
-
 	"github.com/reujab/wallpaper"
-
+	"github.com/skratchdot/open-golang/open"
 )
 
-
-
 var (
-
-	unsplashPhotoUrl = "https://unsplash.com"
+	unsplashPhotoUrl  = "https://unsplash.com"
 	unsplashAuthorUrl = "https://unsplash.com"
 
 	current_wallpaper *unsplash.Image
@@ -50,8 +45,8 @@ func github_url() string {
 }
 
 func version_string() string {
-	ver:= version.Parse(asset_bytes("appdir/version.json"))
-	return fmt.Sprintf("(%s:%s)",ver.Branch,ver.Commit[0:8])
+	ver := version.Parse(asset_bytes("appdir/version.json"))
+	return fmt.Sprintf("(%s:%s)", ver.Branch, ver.Commit[0:8])
 }
 
 func init_menu() {
@@ -75,10 +70,9 @@ func onReady() {
 
 	log.Println("github_url():" + github_url())
 	save_resources()
-	conf_default := config.Load(app_dir() + "/config_default.json", &config.Config{})
-	conf = config.Load(app_dir() + "/config.json", conf_default)
+	conf_default := config.Load(app_dir()+"/config_default.json", &config.Config{})
+	conf = config.Load(app_dir()+"/config.json", conf_default)
 	unsplashClient = unsplash.NewClient(conf.UnsplashApiKey, conf.HttpTimeoutSeconds)
-
 	init_menu()
 	switch_wallpaper()
 	go refresh_collection()
@@ -232,8 +226,8 @@ func set_wallpaper(filename string) {
 
 func set_author_info(image *unsplash.Image) {
 	mPhoto.SetTitle("Photo / Unsplash")
-	mAuthor.SetTitle(image.User.Name+ " / Unsplash")
+	mAuthor.SetTitle(image.User.Name + " / Unsplash")
 	// according to https://medium.com/unsplash/unsplash-api-guidelines-attribution-4d433941d777
-	unsplashPhotoUrl = image.Links.HTML+"?utm_source=desktop_slideshow&utm_medium=referral"
-	unsplashAuthorUrl = image.User.Links.HTML+"?utm_source=desktop_slideshow&utm_medium=referral"
+	unsplashPhotoUrl = image.Links.HTML + "?utm_source=desktop_slideshow&utm_medium=referral"
+	unsplashAuthorUrl = image.User.Links.HTML + "?utm_source=desktop_slideshow&utm_medium=referral"
 }
