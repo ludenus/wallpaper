@@ -19,6 +19,10 @@ build script asks for sudo password to install dependencies
 ```
 $ UNSPLASH_APPLICATION_ID=<Your Unsplash Application ID> ./build_lin.sh
 ```
+### Linux via Docker
+```
+$ UNSPLASH_APPLICATION_ID=<Your Unsplash Application ID> docker-compose up --build
+```
 
 ### MacOsX
 build script asks for sudo password to install dependencies
