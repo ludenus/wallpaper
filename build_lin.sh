@@ -25,7 +25,7 @@ echo "\"commit\":\"`git rev-parse HEAD`\"" >> appdir/version.json
 echo "}" >> appdir/version.json
 
 echo "rebuild resources..."
-./go-bindata appdir/**
+./go-bindata appdir appdir/images appdir/resources
 
 echo "go get dependencies..."
 go get all

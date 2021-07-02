@@ -23,7 +23,7 @@ echo "}" >> appdir/version.json
 
 
 echo "rebuild resources..."
-./go-bindata.exe appdir/**
+./go-bindata.exe appdir appdir/images appdir/resources
 
 echo "go get dependencies..."
 go get all
