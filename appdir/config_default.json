@@ -4,6 +4,6 @@
 "switch_wallpaper_interval_seconds":300,
 "refresh_collection_interval_seconds":3600,
 "history_limit":100,
-"http_timeout_seconds":11,
+"http_timeout_seconds":30,
 "unsplash_api_key":"e2c21dc3aeef31560299f116773cbe3de55bc6eb2c755113d868a4e853e409cf"
 }

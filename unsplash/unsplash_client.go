@@ -44,6 +44,8 @@ func (uClient *UClient) get(url string, adjust func(*http.Request) *http.Request
 	// adjust request
 	request = adjust(request)
 
+	t_begin := time.Now()
+
 	// send request
 	response, err := uClient.httpClient.Do(request)
 	if err != nil {
@@ -56,14 +58,12 @@ func (uClient *UClient) get(url string, adjust func(*http.Request) *http.Request
 
 	contents, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		if err.Error() == "net/http: request canceled (Client.Timeout exceeded while reading body)" {
-			return nil, err
-		} else {
-			panic(err)
-		}
+		log.Println(fmt.Sprintf("failed to get %s : %s", request.URL ,err.Error()))
+		return nil, err
 	}
 
-	log.Println(fmt.Sprintf("[ %d ] %s", response.StatusCode, url))
+	response_time_ms := time.Since(t_begin) / time.Millisecond
+	log.Println(fmt.Sprintf("( %6d ms ) [ %d ] %s", response_time_ms, response.StatusCode, url))
 	if 200 != response.StatusCode {
 		log.Println(string(contents))
 		err = errors.New(fmt.Sprintf("received status code [ %d ] for url %s", response.StatusCode, url))
