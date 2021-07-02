@@ -159,7 +159,7 @@ func (uClient *UClient) ParsePhotosFromCollection(collection *Collection) ([]Ima
 	number_of_requests := 1 + collection.TotalPhotos/per_page
 	var resErr error = nil
 	for page := 1; page <= number_of_requests; page++ {
-		url := fmt.Sprintf("https://api.unsplash.com/collections/%d/photos?per_page=%d&page=%d", collection.ID, per_page, page)
+		url := fmt.Sprintf("https://api.unsplash.com/collections/%s/photos?per_page=%d&page=%d", collection.ID, per_page, page)
 		bytes, err := uClient.Get(url)
 		if err != nil {
 			log.Println(fmt.Sprintf("uClient.Get failed %s", err))

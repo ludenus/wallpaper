@@ -58,7 +58,7 @@ type Collection struct {
 	Curated     bool        `json:"curated"`
 	Description interface{} `json:"description"`
 	Featured    bool        `json:"featured"`
-	ID          int         `json:"id"`
+	ID          string         `json:"id"`
 	Links       struct {
 		HTML    string `json:"html"`
 		Photos  string `json:"photos"`
