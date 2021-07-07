@@ -13,7 +13,7 @@ echo "\"collection\":\"wallpaper\"," >> appdir/config_default.json
 echo "\"switch_wallpaper_interval_seconds\":300," >> appdir/config_default.json
 echo "\"refresh_collection_interval_seconds\":3600," >> appdir/config_default.json
 echo "\"history_limit\":100," >> appdir/config_default.json
-echo "\"http_timeout_seconds\":11," >> appdir/config_default.json
+echo "\"http_timeout_seconds\":30," >> appdir/config_default.json
 echo "\"unsplash_api_key\":\"${UNSPLASH_APPLICATION_ID}\"" >> appdir/config_default.json
 echo "}" >> appdir/config_default.json
 

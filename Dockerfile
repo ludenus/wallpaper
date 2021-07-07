@@ -1,4 +1,4 @@
-FROM golang:1.11.1-stretch
+FROM golang:1.16.5-buster
 
 RUN apt-get update && apt-get install -y libgtk-3-dev libappindicator3-dev
 
